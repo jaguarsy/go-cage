@@ -7,16 +7,21 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
-	// "reflect"
 )
 
 func main() {
 	args := os.Args
+	help := map[string]string{"search": "search repos in github.com"}
 
 	if len(args) < 3 {
-		fmt.Println("invalid args' count")
-		fmt.Println("example: cage search <package's name>")
+		fmt.Print("Cage is a personal tool write by golang.\n\n")
+		fmt.Print("Usage:\n\n")
+		fmt.Print("    cage <command> [<args>][<options>]\n\n")
+		fmt.Print("Commands:\n\n")
+		for k, v := range help {
+			fmt.Printf("    %-15s\t%s\n", k, v)
+		}
+		fmt.Print("\n")
 		return
 	}
 
@@ -49,16 +54,6 @@ func search(target string) {
 	decodeJSON(body)
 }
 
-func loading(stop chan bool) {
-	index := 0
-	arr := [4]string{"|", "/", "-", "\\"}
-	for {
-		fmt.Printf("\rOn %s", arr[index])
-		index++
-		time.Sleep(1000)
-	}
-}
-
 func decodeJSON(body string) {
 	js, err := simplejson.NewJson([]byte(body))
 	if err != nil {
@@ -67,6 +62,9 @@ func decodeJSON(body string) {
 
 	items := js.Get("items")
 	index := 0
+
+	fmt.Printf("\r%21s\t%6s\t%s\n", "language", "stars", "url")
+	fmt.Println("--------------------------------------")
 
 	for {
 		item := items.GetIndex(index).MustMap()
