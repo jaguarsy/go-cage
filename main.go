@@ -14,7 +14,8 @@ import (
 
 func main() {
 	args := os.Args
-	help := map[string]string{"search": "search repos in github.com"}
+	help := map[string]string{"search": "search repos in github.com",
+		"cok": "search position in cok by name and kingdom ID"}
 
 	if len(args) < 3 {
 		fmt.Print("Cage is a personal tool write by golang.\n\n")
